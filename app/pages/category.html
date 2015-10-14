@@ -4,36 +4,25 @@
 	
 	<img src="{{category.image}}"/>
 
+	<!-- Children -->
+	<div ng-show="category.links.children.length > 0">
+		<h3> Categories </h3>
 
-
-		<h3> Child Categories </h3>
-
-		<div 
-				ng-repeat="categoryID in category.links.children"
-				ng-controller="categoryController"
-			>
-			
-
+		<div ng-repeat="categoryID in category.links.children" ng-controller="categoryController">
 			<a href="#category/{{categoryID}}">
 				<p> {{ category.name }} </p>
-			</a>
-			
+			</a>			
 		</div>
+	</div>
 
-		<h3> Child Products </h3>
+	<!-- Products -->
+	<div ng-show="category.links.products.length > 0">
+		<h3> Products </h3>
 
-		<div 
-				ng-repeat="productID in category.links.products"
-				ng-controller="productController"
-			>
-			
-
+		<div ng-repeat="productID in category.links.products" ng-controller="productController">
 			<a href="#product/{{productID}}">
 				<p> {{ product.name }} </p>
 			</a>
-			
 		</div>
-
-		
-		
+	</div>
 </div>
