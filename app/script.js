@@ -31,8 +31,15 @@
             })
 
 
+            // route for the retailers page
+            .when('/retailers', {
+                templateUrl : 'pages/retailers.html',
+                controller  : 'retailersController'
+            })
+
+
             // route for the retailer page
-            .when('/retailer', {
+            .when('/retailer/:id', {
                 templateUrl : 'pages/retailer.html',
                 controller  : 'retailerController'
             })
@@ -43,7 +50,7 @@
     });
 
     rainfallApp.factory('Retailer', function($resource){
-    	return $resource(restEndpointBaseUri + '/retailers/:id', {}, {
+    	return $resource(restEndpointBaseUri + '/retailers/:id', {id: '@id'}, {
     		query: { method: "GET", isArray: false }
     	});
     });
@@ -64,10 +71,20 @@
     });
 
 
-    rainfallApp.controller('retailerController', function($scope, Retailer) {
+    rainfallApp.controller('retailersController', function($scope, Retailer) {
     	Retailer.query(function(data){
-    		$scope.posts = data;
+    		$scope.retailers = data.retailers;
     	});
+    });
+
+    rainfallApp.controller('retailerController', function($scope, $routeParams, Retailer) {
+    	if($routeParams.id){
+    		Retailer.get({id: $routeParams.id}, function(data){
+    			$scope.retailer = data.retailers[0];
+    		});
+    	} else {
+        	$location.path( "/" );
+    	}
     });
 
 
