@@ -1,14 +1,30 @@
-// https://scotch.io/tutorials/single-page-apps-with-angularjs-routing-and-templating
+// Routing tutorial - https://scotch.io/tutorials/single-page-apps-with-angularjs-routing-and-templating
+// Resource tutorial - http://fdietz.github.io/recipes-with-angular-js/consuming-external-services/consuming-restful-apis.html
+// Ascii art generation - http://patorjk.com/software/taag/#p=display&v=1&f=Doom&t=lol
 
 
 (function(window, angular, undefined) {'use strict';
 
 	var restEndpointBaseUri = 'http://themalldataserver.azurewebsites.net';
 
-	// create the module and name it rainfallApp
+/* Module
+	___  ___          _       _      
+	|  \/  |         | |     | |     
+	| .  . | ___   __| |_   _| | ___ 
+	| |\/| |/ _ \ / _` | | | | |/ _ \
+	| |  | | (_) | (_| | |_| | |  __/
+	\_|  |_/\___/ \__,_|\__,_|_|\___|
+*/
 	var rainfallApp = angular.module('rainfallApp', ['ngRoute', 'ngResource']);
 
-	// configure our routes
+/* Routes
+	______            _            
+	| ___ \          | |           
+	| |_/ /___  _   _| |_ ___  ___ 
+	|    // _ \| | | | __/ _ \/ __|
+	| |\ \ (_) | |_| | ||  __/\__ \
+	\_| \_\___/ \__,_|\__\___||___/
+*/
     rainfallApp.config(function($routeProvider) {
         $routeProvider
 
@@ -49,12 +65,28 @@
             });
     });
 
+/* Resources
+	______                                        
+	| ___ \                                       
+	| |_/ /___  ___  ___  _   _ _ __ ___ ___  ___ 
+	|    // _ \/ __|/ _ \| | | | '__/ __/ _ \/ __|
+	| |\ \  __/\__ \ (_) | |_| | | | (_|  __/\__ \
+	\_| \_\___||___/\___/ \__,_|_|  \___\___||___/
+*/
     rainfallApp.factory('Retailer', function($resource){
     	return $resource(restEndpointBaseUri + '/retailers/:id', {id: '@id'}, {
     		query: { method: "GET", isArray: false }
     	});
     });
-    // create the controller and inject Angular's $scope
+
+/* Controllers
+	 _____             _             _ _               
+	/  __ \           | |           | | |              
+	| /  \/ ___  _ __ | |_ _ __ ___ | | | ___ _ __ ___ 
+	| |    / _ \| '_ \| __| '__/ _ \| | |/ _ \ '__/ __|
+	| \__/\ (_) | | | | |_| | | (_) | | |  __/ |  \__ \
+	 \____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|  |___/
+*/    
     rainfallApp.controller('mainController', function($scope) {
         // create a message to display in our view
         $scope.message = 'Everyone come and see how good I look!';
@@ -70,7 +102,14 @@
         $scope.message = 'Contact us! JK. This is just a demo.';
     });
 
-
+/* Retailer
+	______     _        _ _           
+	| ___ \   | |      (_) |          
+	| |_/ /___| |_ __ _ _| | ___ _ __ 
+	|    // _ \ __/ _` | | |/ _ \ '__|
+	| |\ \  __/ || (_| | | |  __/ |   
+	\_| \_\___|\__\__,_|_|_|\___|_|   
+*/
     rainfallApp.controller('retailersController', function($scope, Retailer) {
     	Retailer.query(function(data){
     		$scope.retailers = data.retailers;
