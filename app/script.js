@@ -59,6 +59,18 @@
                 controller  : 'retailerController'
             })
 
+            // route for the retailer page
+            .when('/category/:id', {
+                templateUrl : 'pages/category.html',
+                controller  : 'categoryController'
+            })
+
+            // route for the retailer page
+            .when('/product/:id', {
+                templateUrl : 'pages/product.html',
+                controller  : 'productController'
+            })
+
             .otherwise({
             	redirectTo: '/home'
             });
@@ -138,10 +150,21 @@
     });
 
 
-    rainfallApp.controller('categoryController', function($scope, Category) {
-    	if($scope.item){
-    		Category.get({id: $scope.item}, function(data){
+    rainfallApp.controller('categoryController', function($scope, $routeParams, Category) {
+    	var idParameter = $scope.categoryID || $routeParams.id;
+    	if(idParameter){
+    		Category.get({id: idParameter}, function(data){
     			$scope.category = data.categories[0];
+    		});
+    	}
+    });
+
+
+    rainfallApp.controller('productController', function($scope, $routeParams, Product) {
+    	var idParameter = $scope.productID || $routeParams.id;
+    	if(idParameter){
+    		Product.get({id: idParameter}, function(data){
+    			$scope.product = data.products[0];
     		});
     	}
     });

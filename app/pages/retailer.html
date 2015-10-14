@@ -7,10 +7,14 @@
 		<h3> Default Categories </h3>
 
 		<div 
-				ng-repeat="item in retailer.links.defaultCategories"
+				ng-repeat="categoryID in retailer.links.defaultCategories"
 				ng-controller="categoryController"
 			>
-			<p> {{category.name }} </p>
+			
+
+			<a href="#category/{{categoryID}}">
+				<p> {{ category.name }} </p>
+			</a>
 			
 		</div>
 		
