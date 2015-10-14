@@ -114,17 +114,17 @@
 */    
     rainfallApp.controller('mainController', function($scope) {
         // create a message to display in our view
-        $scope.message = 'Everyone come and see how good I look!';
+        $scope.message = 'Welcome user';
     });
 
     rainfallApp.controller('aboutController', function($scope) {
 
-        $scope.message = 'Look! I am an about page.';
+        $scope.message = 'Created 14-10-2015';
     });
 
     rainfallApp.controller('contactController', function($scope) {
 
-        $scope.message = 'Contact us! JK. This is just a demo.';
+        $scope.message = 'Contact us at: thehig@gmail.com';
     });
 
 	/* Retailer
