@@ -53,7 +53,6 @@
                 controller  : 'retailersController'
             })
 
-
             // route for the retailer page
             .when('/retailer/:id', {
                 templateUrl : 'pages/retailer.html',
@@ -75,6 +74,18 @@
 */
     rainfallApp.factory('Retailer', function($resource){
     	return $resource(restEndpointBaseUri + '/retailers/:id', {id: '@id'}, {
+    		query: { method: "GET", isArray: false }
+    	});
+    });
+
+    rainfallApp.factory('Category', function($resource){
+    	return $resource(restEndpointBaseUri + '/categories/:id', {id: '@id'}, {
+    		query: { method: "GET", isArray: false }
+    	});
+    });
+
+    rainfallApp.factory('Product', function($resource){
+    	return $resource(restEndpointBaseUri + '/products/:id', {id: '@id'}, {
     		query: { method: "GET", isArray: false }
     	});
     });
@@ -125,6 +136,5 @@
         	$location.path( "/" );
     	}
     });
-
 
 })(window, window.angular);

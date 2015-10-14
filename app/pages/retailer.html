@@ -3,4 +3,12 @@
     <h1>{{ retailer.name }}</h1>
 	
 	<img src="{{retailer.image}}"/>
+
+		<h3> Default Categories </h3>
+
+		<div ng-repeat="category in retailer.links.defaultCategories">
+			
+			<p> {{ category }}</p>
+		</div>
+		
 </div>
