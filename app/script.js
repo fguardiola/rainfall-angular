@@ -1,6 +1,6 @@
-// Routing tutorial - https://scotch.io/tutorials/single-page-apps-with-angularjs-routing-and-templating
-// Resource tutorial - http://fdietz.github.io/recipes-with-angular-js/consuming-external-services/consuming-restful-apis.html
-// Ascii art generation - http://patorjk.com/software/taag/#p=display&v=1&f=Doom&t=lol
+// Routing tutorial 			- https://scotch.io/tutorials/single-page-apps-with-angularjs-routing-and-templating
+// Resource tutorial 			- http://fdietz.github.io/recipes-with-angular-js/consuming-external-services/consuming-restful-apis.html
+// Ascii art generation 		- http://patorjk.com/software/taag/#p=display&v=1&f=Doom&t=lol
 
 
 (function(window, angular, undefined) {'use strict';
@@ -28,49 +28,51 @@
     rainfallApp.config(function($routeProvider) {
         $routeProvider
 
-            // route for the home page
+            // =====  Home  =====
             .when('/home', {
                 templateUrl : 'pages/home.html',
                 controller  : 'mainController'
             })
 
-            // route for the about page
+            // =====  About  =====
             .when('/about', {
                 templateUrl : 'pages/about.html',
                 controller  : 'aboutController'
             })
 
-            // route for the contact page
+            // =====  Contact  =====
             .when('/contact', {
                 templateUrl : 'pages/contact.html',
                 controller  : 'contactController'
             })
 
 
-            // route for the retailers page
+            // =====  Retailers  =====
             .when('/retailers', {
                 templateUrl : 'pages/retailers.html',
                 controller  : 'retailersController'
             })
 
-            // route for the retailer page
+            // =====  Retailer  =====
             .when('/retailer/:id', {
                 templateUrl : 'pages/retailer.html',
                 controller  : 'retailerController'
             })
 
-            // route for the retailer page
+            // =====  Category =====
             .when('/category/:id', {
                 templateUrl : 'pages/category.html',
                 controller  : 'categoryController'
             })
 
-            // route for the retailer page
+            // =====  Product  =====
             .when('/product/:id', {
                 templateUrl : 'pages/product.html',
                 controller  : 'productController'
             })
 
+
+            // =====  Default  =====
             .otherwise({
             	redirectTo: '/home'
             });
@@ -125,14 +127,14 @@
         $scope.message = 'Contact us! JK. This is just a demo.';
     });
 
-/* Retailer
-	______     _        _ _           
-	| ___ \   | |      (_) |          
-	| |_/ /___| |_ __ _ _| | ___ _ __ 
-	|    // _ \ __/ _` | | |/ _ \ '__|
-	| |\ \  __/ || (_| | | |  __/ |   
-	\_| \_\___|\__\__,_|_|_|\___|_|   
-*/
+	/* Retailer
+		______     _        _ _           
+		| ___ \   | |      (_) |          
+		| |_/ /___| |_ __ _ _| | ___ _ __ 
+		|    // _ \ __/ _` | | |/ _ \ '__|
+		| |\ \  __/ || (_| | | |  __/ |   
+		\_| \_\___|\__\__,_|_|_|\___|_|   
+	*/
     rainfallApp.controller('retailersController', function($scope, Retailer) {
     	Retailer.query(function(data){
     		$scope.retailers = data.retailers;
@@ -149,7 +151,16 @@
     	}
     });
 
-
+	/* Category
+		 _____       _                              
+		/  __ \     | |                             
+		| /  \/ __ _| |_ ___  __ _  ___  _ __ _   _ 
+		| |    / _` | __/ _ \/ _` |/ _ \| '__| | | |
+		| \__/\ (_| | ||  __/ (_| | (_) | |  | |_| |
+		 \____/\__,_|\__\___|\__, |\___/|_|   \__, |
+		                      __/ |            __/ |
+		                     |___/            |___/ 
+	*/
     rainfallApp.controller('categoryController', function($scope, $routeParams, Category) {
     	var idParameter = $scope.categoryID || $routeParams.id;
     	if(idParameter){
@@ -159,7 +170,14 @@
     	}
     });
 
-
+	/* Product
+		______              _            _   
+		| ___ \            | |          | |  
+		| |_/ / __ ___   __| |_   _  ___| |_ 
+		|  __/ '__/ _ \ / _` | | | |/ __| __|
+		| |  | | | (_) | (_| | |_| | (__| |_ 
+		\_|  |_|  \___/ \__,_|\__,_|\___|\__|
+	*/
     rainfallApp.controller('productController', function($scope, $routeParams, Product) {
     	var idParameter = $scope.productID || $routeParams.id;
     	if(idParameter){
