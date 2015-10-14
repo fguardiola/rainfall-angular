@@ -30,44 +30,44 @@
 
             // =====  Home  =====
             .when('/home', {
-                templateUrl : 'pages/home.html',
+                templateUrl : 'app/pages/home.html',
                 controller  : 'mainController'
             })
 
             // =====  About  =====
             .when('/about', {
-                templateUrl : 'pages/about.html',
+                templateUrl : 'app/pages/about.html',
                 controller  : 'aboutController'
             })
 
             // =====  Contact  =====
             .when('/contact', {
-                templateUrl : 'pages/contact.html',
+                templateUrl : 'app/pages/contact.html',
                 controller  : 'contactController'
             })
 
 
             // =====  Retailers  =====
             .when('/retailers', {
-                templateUrl : 'pages/retailers.html',
+                templateUrl : 'app/pages/retailers.html',
                 controller  : 'retailersController'
             })
 
             // =====  Retailer  =====
             .when('/retailer/:id', {
-                templateUrl : 'pages/retailer.html',
+                templateUrl : 'app/pages/retailer.html',
                 controller  : 'retailerController'
             })
 
             // =====  Category =====
             .when('/category/:id', {
-                templateUrl : 'pages/category.html',
+                templateUrl : 'app/pages/category.html',
                 controller  : 'categoryController'
             })
 
             // =====  Product  =====
             .when('/product/:id', {
-                templateUrl : 'pages/product.html',
+                templateUrl : 'app/pages/product.html',
                 controller  : 'productController'
             })
 
