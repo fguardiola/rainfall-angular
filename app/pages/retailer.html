@@ -6,9 +6,12 @@
 
 		<h3> Default Categories </h3>
 
-		<div ng-repeat="category in retailer.links.defaultCategories">
+		<div 
+				ng-repeat="item in retailer.links.defaultCategories"
+				ng-controller="categoryController"
+			>
+			<p> {{category.name }} </p>
 			
-			<p> {{ category }}</p>
 		</div>
 		
 </div>

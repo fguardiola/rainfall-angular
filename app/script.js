@@ -137,4 +137,13 @@
     	}
     });
 
+
+    rainfallApp.controller('categoryController', function($scope, Category) {
+    	if($scope.item){
+    		Category.get({id: $scope.item}, function(data){
+    			$scope.category = data.categories[0];
+    		});
+    	}
+    });
+
 })(window, window.angular);
