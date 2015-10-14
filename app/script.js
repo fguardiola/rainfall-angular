@@ -3,8 +3,10 @@
 
 (function(window, angular, undefined) {'use strict';
 
+	var restEndpointBaseUri = 'http://themalldataserver.azurewebsites.net';
+
 	// create the module and name it rainfallApp
-	var rainfallApp = angular.module('rainfallApp', ['ngRoute']);
+	var rainfallApp = angular.module('rainfallApp', ['ngRoute', 'ngResource']);
 
 	// configure our routes
     rainfallApp.config(function($routeProvider) {
@@ -28,11 +30,23 @@
                 controller  : 'contactController'
             })
 
+
+            // route for the retailer page
+            .when('/retailer', {
+                templateUrl : 'pages/retailer.html',
+                controller  : 'retailerController'
+            })
+
             .otherwise({
             	redirectTo: '/home'
             });
     });
 
+    rainfallApp.factory('Retailer', function($resource){
+    	return $resource(restEndpointBaseUri + '/retailers/:id', {}, {
+    		query: { method: "GET", isArray: false }
+    	});
+    });
     // create the controller and inject Angular's $scope
     rainfallApp.controller('mainController', function($scope) {
         // create a message to display in our view
@@ -40,11 +54,20 @@
     });
 
     rainfallApp.controller('aboutController', function($scope) {
+
         $scope.message = 'Look! I am an about page.';
     });
 
     rainfallApp.controller('contactController', function($scope) {
+
         $scope.message = 'Contact us! JK. This is just a demo.';
+    });
+
+
+    rainfallApp.controller('retailerController', function($scope, Retailer) {
+    	Retailer.query(function(data){
+    		$scope.posts = data;
+    	});
     });
 
 
