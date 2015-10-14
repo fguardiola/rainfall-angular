@@ -1,0 +1,39 @@
+<!-- home.html -->
+<div class="jumbotron text-center">
+    <h1>{{ category.name }}</h1>
+	
+	<img src="{{category.image}}"/>
+
+
+
+		<h3> Child Categories </h3>
+
+		<div 
+				ng-repeat="categoryID in category.links.children"
+				ng-controller="categoryController"
+			>
+			
+
+			<a href="#category/{{categoryID}}">
+				<p> {{ category.name }} </p>
+			</a>
+			
+		</div>
+
+		<h3> Child Products </h3>
+
+		<div 
+				ng-repeat="productID in category.links.products"
+				ng-controller="productController"
+			>
+			
+
+			<a href="#product/{{productID}}">
+				<p> {{ product.name }} </p>
+			</a>
+			
+		</div>
+
+		
+		
+</div>

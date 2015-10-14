@@ -1,0 +1,21 @@
+<!-- home.html -->
+<div class="jumbotron text-center">
+    <h1>{{ retailer.name }}</h1>
+	
+	<img src="{{retailer.image}}"/>
+
+		<h3> Default Categories </h3>
+
+		<div 
+				ng-repeat="categoryID in retailer.links.defaultCategories"
+				ng-controller="categoryController"
+			>
+			
+
+			<a href="#category/{{categoryID}}">
+				<p> {{ category.name }} </p>
+			</a>
+			
+		</div>
+		
+</div>
