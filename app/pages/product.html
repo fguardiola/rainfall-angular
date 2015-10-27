@@ -1,7 +1,19 @@
 <!-- home.html -->
 <div class="jumbotron text-center">
     <h1>{{ product.name }}</h1>
+  
 	
-	<img src="{{product.mainimage}}"/>
+	<img src="{{product.mainimage}}"/><br><br>
 	<p> {{product.description}} </p>
-</div>
+	
+	<div class="col-sm-offset-2">
+		<button class="btn btn-default" ng-click="editProduct($event)" ng-disabled="disableEdit">Edit</button>
+	</div>
+	
+	<!-- <div class="check-element animate-show" ng-show="showForm">
+    	<span class="glyphicon glyphicon-thumbs-up"></span> I show up when you click Edit.<br>
+  		Name:<input type="text" ng-model="product.name"></label><br>
+  		Description:<input type="text" ng-model="product.description"></label><br><br>
+  		<button ng-click="saveProduct($event)">Save</button>
+  	</div> -->
+</div> 

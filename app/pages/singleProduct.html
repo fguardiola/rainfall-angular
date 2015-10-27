@@ -1,0 +1,14 @@
+<h2> {{product.name}} </h2>
+<img src="{{product.mainimage}}" /><br><br>
+
+<form name='editProduct' class='form-horizontal'>
+	<form-field ng-repeat='(k,v) in product | keyFilter :"id"  | keyFilter :"links"' record='product' rawrecord='productToModify' field='{{k}}' live='true'>
+	</form-field>
+	
+	<div class='row form-group'>
+		<div class='col-sm-offset-2'>
+			<button class='btn btn-danger' ng-click='delete()'>Delete Product</button>
+		</div>
+	</div>
+	
+</form>

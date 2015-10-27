@@ -17,7 +17,7 @@
 
 	<!-- Products -->
 	<div ng-show="category.links.products.length > 0">
-		<h3> Products </h3>
+		<h3> Products </h3> <button class="btn btn-default">Add a Product</button>
 
 		<div ng-repeat="productID in category.links.products" ng-controller="productController">
 			<a href="#product/{{productID}}">
