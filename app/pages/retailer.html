@@ -1,13 +1,12 @@
 <!-- home.html -->
 <div class="jumbotron text-center">
     <h1>{{ retailer.name }}</h1>
-	<div class='row'>
-	<img src="{{retailer.image}}"/>
-
-	<div class='col-sm-offset-4'>
-		<form-field  ng-repeat='(k,v) in retailer | keyFilter :"id"  | keyFilter :"links"' record='retailer' rawrecord='retailerToModify' field='{{k}}' live='true' recordtype='retailer'></form-field>
+	
+	<img class='row' src="{{retailer.image}}"/><br><br>
+	<div class='row col-sm-offset-2'>
+		<form-field class='el-centered' ng-repeat='(k,v) in retailer | keyFilter :"id"  | keyFilter :"links"' record='retailer' rawrecord='retailerToModify' field='{{k}}' live='true' recordtype='retailer' required='true'></form-field>
 	</div>
-	</div>
+	
 	
 
 	<div ng-show="retailer.links.defaultCategories.length > 0">
@@ -18,11 +17,11 @@
 				<p> {{ category.name }} </p>
 			</a>
 		</div>
-		<button class="btn btn-default" ng-click='newDefaultCategory()'>Add a Default Category</button>
+		<button class="btn btn-primary" ng-click='newDefaultCategory()'>Add a Default Category</button>
 	</div>
 	<div class='row form-group'>
-		<div class='col-sm-offset-2'>
-			<button class='btn btn-danger' ng-click='delete()'>Delete Product</button>
+		<div class='col-sm-offset-4'>
+			<button class='btn btn-danger' ng-click='delete()'>Delete Retailer</button>
 		</div>
 	</div>
 </div>

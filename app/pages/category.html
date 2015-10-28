@@ -2,13 +2,13 @@
 <div class="jumbotron text-center">
     <h1>{{ category.name }}</h1>
 	
-	<div class='row jumbotron text-center'>
-	<img class='' src="{{category.image}}"/>
+	
+	<img class='' src="{{category.image}}"/><br><br>
 
-	<div class='col-sm-offset-4'>
-		<form-field  ng-repeat='(k,v) in category | keyFilter :"id"  | keyFilter :"links"' record='category' rawrecord='categoryToModify' field='{{k}}' live='true' recordtype='category'></form-field>
+	<div class='row col-sm-offset-2'>
+		<form-field class='el-centered' ng-repeat='(k,v) in category | keyFilter :"id"  | keyFilter :"links"' record='category' rawrecord='categoryToModify' field='{{k}}' live='true' recordtype='category' required='true'></form-field>
 	</div>
-	</div>
+	
 
 	<!-- Children -->
 	<div ng-show="category.links.children.length > 0">
@@ -19,7 +19,7 @@
 				<p> {{ category.name }} </p>
 			</a>			
 		</div>
-		<button class="btn btn-default" ng-click='newCategory()'>Add a Category</button>
+		<button class="btn btn-primary" ng-click='newCategory()'>Add a Category</button>
 	</div>
 
 	<!-- Products -->
@@ -31,7 +31,12 @@
 				<p> {{ product.name }} </p>
 			</a>
 		</div>
-		<button class="btn btn-default" ng-click='newProduct()'>Add a Product</button>
+		<button class="btn btn-primary" ng-click='newProduct()'>Add a Product</button>
+	</div>
+	<div class='row form-group'>
+		<div class='col-sm-offset-4'>
+			<button class='btn btn-danger' ng-click='delete()'>Delete Category</button>
+		</div>
 	</div>
 
 	

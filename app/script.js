@@ -86,6 +86,10 @@
                 templateUrl: 'app/pages/newRetailer.html',
                 controller: 'newRetailerController'
             })
+            .when('/newCategory', {
+                templateUrl: 'app/pages/newCategory.html',
+                controller: 'newCategoryController'
+            })
 
 
 
@@ -291,14 +295,53 @@
 
                 $scope.newCategory = function() {
                     //share info neccessary to create a new product
-                    //$location.url('/newCategory');
-                    alert("No implemented yet")
+                    $location.url('/newCategory');
+                    //alert("No implemented yet")
                 };
 
                 $scope.newProduct = function() {
                     //share info neccessary to create a new product
                     $location.url('/newProduct');
                 };
+
+                 $scope.delete = function() {
+                        //share info neccessary to create a new product
+                        // $location.url('/newRetailer');
+                         alert("No implemented yet")
+                    };
+            });
+            rainfallApp.controller('newCategoryController', function($scope, Retailer, $location) {
+
+
+
+                $scope.categoryToModify = new Retailer({
+                    "categories": []
+
+                });
+                $scope.category = {
+                    "name": '',
+                    "image": '',
+                    "retailer":''
+
+                };
+
+                // Save new contact
+                $scope.save = function() {
+                    alert("Not implemented yet")
+                    // if ($scope.newCategory.$invalid) {
+                    //     $scope.$broadcast('record:invalid'); //??????
+                    // } else {
+                    //     $scope.categoryToModify.categories.push($scope.retailer);
+                    //     $scope.categoryToModify.$save(function(res, err) {
+                    //         console.log("Creating category Response:" + JSON.stringify(res))
+                    //     });
+                    //     var url = "/category"+ "something";
+                    //     $location.url(url);
+                    // }
+                };
+
+
+
             });
 
             /* Product

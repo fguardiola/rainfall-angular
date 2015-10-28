@@ -1,16 +1,20 @@
 <div class="jumbotron text-center">
-<h2> {{product.name}} </h2>
-<img src="{{product.mainimage}}" /><br><br>
+	<h2> {{product.name}} </h2>
+	<img src="{{product.mainimage}}" /><br><br>
+	<div class='row col-sm-offset-2'>
+	<form name='editProduct' class='form-horizontal'>
+		<form-field  record='product' field='name' rawrecord='productToModify' field='{{k}}' live='true' recordtype='product' required='true'>
+		</form-field>
 
-<form name='editProduct' class='form-horizontal'>
-	<form-field  ng-repeat='(k,v) in product | keyFilter :"id"  | keyFilter :"links"' record='product' rawrecord='productToModify' field='{{k}}' live='true' recordtype='product'>
-	</form-field>
-	
-	<div class='row form-group'>
-		<div class='col-sm-offset-2'>
-			<button class='btn btn-danger' ng-click='delete()'>Delete Product</button>
+		<form-field  ng-repeat='(k,v) in product | keyFilter :"id" | keyFilter :"name" | keyFilter :"links"' record='product' rawrecord='productToModify' field='{{k}}' live='true' recordtype='product'>
+		</form-field>
+		
+		<div class='row form-group'>
+			<div class='col-sm-offset-2'>
+				<button class='btn btn-danger' ng-click='delete()'>Delete Product</button>
+			</div>
 		</div>
+		
+	</form>
 	</div>
-	
-</form>
 </div>

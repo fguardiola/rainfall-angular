@@ -1,0 +1,16 @@
+<div class="jumbotron text-center">
+	<h2> New Category</h2><br>
+	<div class='row col-sm-offset-2'>
+		<form name='newCategory' novalidate class='form-horizontal'>
+
+			<form-field ng-repeat='(k,v) in category | keyFilter :"retailer"' record='category' field='{{k}}' live='false' required='true' ></form-field>
+			
+			<div class='row form-group'>
+				<div class='col-sm-offset-2'>
+					<button class='btn btn-primary' ng-click='save()'>Create Category</button>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+</div>
