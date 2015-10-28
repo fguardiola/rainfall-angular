@@ -100,7 +100,8 @@
 */
     rainfallApp.factory('Retailer', function($resource){
     	return $resource(restEndpointBaseUri + '/retailers/:id', {id: '@id'}, {
-    		query: { method: "GET", isArray: false }
+    		query: { method: "GET", isArray: false },
+            update: {method:'PUT',isArray: false }
     	});
     });
 
@@ -156,16 +157,29 @@
     	Retailer.query(function(data){
     		$scope.retailers = data.retailers;
     	});
+        $scope.newRetailer=function(){
+            //share info neccessary to create a new product
+            //$location.url('/newCategory');
+            alert("No implemented yet")
+        };
     });
 
     rainfallApp.controller('retailerController', function($scope, $routeParams, Retailer) {
     	if($routeParams.id){
     		Retailer.get({id: $routeParams.id}, function(data){
     			$scope.retailer = data.retailers[0];
+                $scope.retailerToModify = data;
     		});
     	} else {
         	$location.path( "/" );
     	}
+
+
+        $scope.newDefaultCategory=function(){
+            //share info neccessary to create a new product
+            //$location.url('/newCategory');
+            alert("No implemented yet")
+        };
     });
 
 	/* Category
@@ -410,7 +424,19 @@
                             });
 
                         }
-                        else if($scope.recordtype === 'retailer'){}
+                        else if($scope.recordtype === 'retailer'){
+                            console.log("Updating retailer.....");
+                            Retailer.update({
+                                id: $scope.rawrecord.retailers[0].id
+                            }, JSON.stringify($scope.rawrecord), function success(updatedRecord) {
+                                console.log("Success");
+                                console.log("Retailer updated:" + JSON.stringify($scope.rawrecord));
+                                //$scope.record = updatedRecord.products[0];
+                            }, function error(err) {
+                                console.log(err);
+                                // evt.target.disabled = false;
+                            });
+                        }
                         
 
                     }
