@@ -2,7 +2,13 @@
 <div class="jumbotron text-center">
     <h1>{{ category.name }}</h1>
 	
-	<img src="{{category.image}}"/>
+	<div class='row jumbotron text-center'>
+	<img class='' src="{{category.image}}"/>
+
+	<div class='col-sm-offset-4'>
+		<form-field  ng-repeat='(k,v) in category | keyFilter :"id"  | keyFilter :"links"' record='category' rawrecord='categoryToModify' field='{{k}}' live='true' recordtype='category'></form-field>
+	</div>
+	</div>
 
 	<!-- Children -->
 	<div ng-show="category.links.children.length > 0">
@@ -13,16 +19,20 @@
 				<p> {{ category.name }} </p>
 			</a>			
 		</div>
+		<button class="btn btn-default" ng-click='newCategory()'>Add a Category</button>
 	</div>
 
 	<!-- Products -->
 	<div ng-show="category.links.products.length > 0">
-		<h3> Products </h3> <button class="btn btn-default">Add a Product</button>
+		<h3> Products </h3> 
 
 		<div ng-repeat="productID in category.links.products" ng-controller="productController">
 			<a href="#product/{{productID}}">
 				<p> {{ product.name }} </p>
 			</a>
 		</div>
+		<button class="btn btn-default" ng-click='newProduct()'>Add a Product</button>
 	</div>
+
+	
 </div>

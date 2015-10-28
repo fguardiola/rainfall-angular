@@ -1,8 +1,9 @@
+<div class="jumbotron text-center">
 <h2> {{product.name}} </h2>
 <img src="{{product.mainimage}}" /><br><br>
 
 <form name='editProduct' class='form-horizontal'>
-	<form-field ng-repeat='(k,v) in product | keyFilter :"id"  | keyFilter :"links"' record='product' rawrecord='productToModify' field='{{k}}' live='true'>
+	<form-field  ng-repeat='(k,v) in product | keyFilter :"id"  | keyFilter :"links"' record='product' rawrecord='productToModify' field='{{k}}' live='true' recordtype='product'>
 	</form-field>
 	
 	<div class='row form-group'>
@@ -12,3 +13,4 @@
 	</div>
 	
 </form>
+</div>

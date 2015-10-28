@@ -77,6 +77,11 @@
                 templateUrl : 'app/pages/singleProduct.html',
                 controller  : 'singleProductController'
             })
+            .when('/newProduct', {
+                templateUrl : 'app/pages/newProduct.html',
+                controller  : 'newProductController'
+            })
+
 
 
             // =====  Default  =====
@@ -101,14 +106,17 @@
 
     rainfallApp.factory('Category', function($resource){
     	return $resource(restEndpointBaseUri + '/categories/:id', {id: '@id'}, {
-    		query: { method: "GET", isArray: false }
+    		query: { method: "GET", isArray: false },
+             update: {method:'PUT',isArray: false }
     	});
     });
 
     rainfallApp.factory('Product', function($resource){
     	return $resource(restEndpointBaseUri + '/products/:id', {id: '@id'}, {
     		query: { method: "GET", isArray: false },
-            update: {method:'PUT',isArray: false }
+            update: {method:'PUT',isArray: false },
+            delete: {method:'DELETE'}
+           
 
     	});
     });
@@ -170,13 +178,31 @@
 		                      __/ |            __/ |
 		                     |___/            |___/ 
 	*/
-    rainfallApp.controller('categoryController', function($scope, $routeParams, Category) {
-    	var idParameter = $scope.categoryID || $routeParams.id;
+    rainfallApp.controller('categoryController', function($scope, $routeParams, Category,$location) {
+    	
+
+
+
+        var idParameter = $scope.categoryID || $routeParams.id;
     	if(idParameter){
     		Category.get({id: idParameter}, function(data){
-    			$scope.category = data.categories[0];
+    			// console.log("Data:"+JSON.stringify(data));
+                $scope.category = data.categories[0];
+                $scope.categoryToModify = data;
+                
     		});
     	}
+
+        $scope.newCategory=function(){
+            //share info neccessary to create a new product
+            //$location.url('/newCategory');
+            alert("No implemented yet")
+        };
+
+        $scope.newProduct=function(){
+            //share info neccessary to create a new product
+            $location.url('/newProduct');
+        };
     });
 
 	/* Product
@@ -240,33 +266,88 @@
         // };
 
     })
-    rainfallApp.controller('singleProductController', function($scope, $routeParams, Product) {
-            var idParameter = $scope.productID || $routeParams.id;
-            
+    rainfallApp.controller('singleProductController', function($scope, $routeParams, Product,$location) {
+       
+        // var form=document.getElementsByTagName("form-field");
+        // var formField=form.getAttribute("record");
+         
+        // // var formFieldType=form.record;
+        // console.log("formFieldType"+ formFieldType);
+
+        var idParameter = $scope.productID || $routeParams.id;
+
+
+        if (idParameter) {
+
+            $scope.rawData = Product.get({
+                id: idParameter
+            }, function(data) {
+                $scope.productToModify = data;
+                $scope.product = data.products[0];
+                // console.log("Product getting back:"+JSON.stringify(data));
+                console.log("Product :" + JSON.stringify($scope.product));
+
+                // console.log(JSON.stringify($scope.product));
+                // console.log("data: "+JSON.stringify(data));
+            });
+
+
+
+        }
+
+        $scope.delete = function() {
+            Product.delete({id:$scope.product.id},function(res, error) {
+                if (res) {
+                    console.log("Deletion completed");
+                } else if (error) {
+                    console.log("Error trying to delete");
+                }
+            });
            
-            if(idParameter){
-                
-                Product.get({id: idParameter}, function(data){
-                    $scope.productToModify=data;
-                    $scope.product=data.products[0];
-                    // console.log("Product getting back:"+JSON.stringify(data));
-                    console.log("Product :"+JSON.stringify($scope.product));
-                    
-                    // console.log(JSON.stringify($scope.product));
-                    // console.log("data: "+JSON.stringify(data));
-                });
-            
+           var url = "/category/" + $scope.product.links.categories[0];
+           console.log("URL"+url)
+                $location.url(url);
+        };
 
-               
-            }
-
-            
+    });
+    rainfallApp.controller('newProductController', function($scope, $routeParams, Product,$location) {
+        
+        $scope.productToModify = new Product({
+            "products": []
 
         });
+        $scope.product={
+                "name": '',
+                "image": '',
+
+                "retailer": 'bzyIZ7sozZ09Kd61',
+                "categories": ['rl6qowq8IyNWZ1Tj']
+
+
+            };
+
+        // Save new contact
+        $scope.save = function() {
+            alert("Not implemented yet")
+            // if ($scope.newProduct.$invalid) {
+            //     $scope.$broadcast('record:invalid'); //??????
+            // } else {
+            //     $scope.productToModify.products.push($scope.product);
+            //     $scope.productToModify.$save(function(res,err){
+            //         console.log("Saving Product Response:"+JSON.stringify(res))
+            //     });
+            //     var url = "/category/" + $scope.product.categories[0];
+            //     $location.url(url);
+            // }
+        };
+
+
+
+    });
     
     //DIRECTIVES
 
-    rainfallApp.directive('formField', function($timeout,Product) {
+    rainfallApp.directive('formField', function($timeout,Product,Category,Retailer) {
         return {
             restrict: 'EA', //can be used as an element or an attribute
             templateUrl: 'app/pages/form-field.html', //template: html the formFiel is gonna be replaced with
@@ -276,70 +357,62 @@
                 rawrecord:'=',
                 field: '@', //we only need to read those values not reflect changes ->'@'           
                 live: '@',
-                required: '@'
+                required: '@',
+                recordtype:'@'
             },
             require:'^form',
             link: function($scope, element, attr,form) { //is run during the creation of this directive and it allows us to modify whats going on when the directive is created and replaces the content
                 // $scope.types = FieldTypes;
 
-                console.log("Product from directive: "+ JSON.stringify($scope.record));
-                console.log("productToModify: "+ JSON.stringify($scope.rawrecord));
+                 console.log("Record from directive: "+ JSON.stringify($scope.record));
+                 console.log("RawRecord "+ JSON.stringify($scope.rawrecord));
+
+                var type=$scope.recordtype;
+                console.log(type);
                 
                 $scope.$on('record:invalid', function() {
-                    console.log("FIELD InVALIDDDDDDD")
+                    // console.log("FIELD InVALIDDDDDDD")
                     $scope[$scope.field].$setDirty(); //refers to the ng-form attribute or fake form element created inside the directive
                 })
 
 
-                $scope.remove = function(field) {
-                    console.log("REMOVE");
-                    delete $scope.record[field];
-                    $scope.record.$update();
-                    //$scope.blurUpdate();
-                };
-
+               
                 $scope.update = function() {
-                    // console.log("Updating.....");
-                    // console.log("Record to update:"+JSON.stringify($scope.record));
-                    console.log("rawRecord to update:"+JSON.stringify($scope.rawrecord));
-                    // var product=new Product();
-                    // console.log("Product entity:"+JSON.stringify(product));
+                     console.log("Updating.....");
                     
                     if ($scope.live !== 'false') {
-                        // $scope.rawrecord.products[0]=$scope.record;
-                        // $scope.rawrecord.$update(function(updatedRecord) {
-                        //     console.log("EUREKAAA");
-                        //     $scope.record = updatedRecord.products[0];
-                        // });
+
+                        if ($scope.recordtype === 'product') {
+                             console.log("Updating product.....");
+                            Product.update({
+                                id: $scope.rawrecord.products[0].id
+                            }, JSON.stringify($scope.rawrecord), function success(updatedRecord) {
+                                console.log("Success");
+                                console.log("Product updated:" + JSON.stringify($scope.rawrecord));
+                                //$scope.record = updatedRecord.products[0];
+                            }, function error(err) {
+                                console.log(err);
+                                // evt.target.disabled = false;
+                            });
+                        }
                         
-                         Product.update({
-                            id: $scope.rawrecord.products[0].id
-                        }, JSON.stringify($scope.rawrecord), function success(updatedRecord) {
-                            console.log("Success");
-                            console.log("Product updated:"+JSON.stringify($scope.rawrecord));
-                           //$scope.record = updatedRecord.products[0];
-                        }, function error(err) {
-                            console.log(err);
-                            // evt.target.disabled = false;
-                        });
+                        else if($scope.recordtype === 'category'){
+                            console.log("Updating category.....");
+                            Category.update({
+                                id: $scope.rawrecord.categories[0].id
+                            }, JSON.stringify($scope.rawrecord), function success(updatedRecord) {
+                                console.log("Success");
+                                console.log("Category updated:" + JSON.stringify($scope.rawrecord));
+                                //$scope.record = updatedRecord.products[0];
+                            }, function error(err) {
+                                console.log(err);
+                                // evt.target.disabled = false;
+                            });
 
+                        }
+                        else if($scope.recordtype === 'retailer'){}
+                        
 
-
-                        // $scope.rawrecord.products = [];
-                        // $scope.rawrecord.products.push($scope.record);
-                        // console.log("Product to save:" + JSON.stringify($scope.rawrecord));
-                        // Product.update({
-                        //     id: idParameter
-                        // }, JSON.stringify($scope.productToModify), function success(succ) {
-                        //     console.log("Success");
-                        //     console.log("$scope.showForm" + $scope.showForm);
-                        //     $scope.disableEdit = false;
-                        //     $scope.showForm = false;
-                        //     // evt.target.disabled = false;
-                        // }, function error(err) {
-                        //     console.log(err);
-                        //     // evt.target.disabled = false;
-                        // });
                     }
                 };
 
@@ -348,6 +421,8 @@
                     $timeout.cancel(saveTimeout);
                     saveTimeout = setTimeout($scope.update, 1000); // execute that function in one second. If the user modifies the field the timeout is reseted 
                 };
+
+
 
             }
 

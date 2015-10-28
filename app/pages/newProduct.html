@@ -1,0 +1,14 @@
+<div class="jumbotron text-center">
+	<h2> New Product</h2>
+	<form name='newProduct' novalidate class='form-horizontal'>
+
+		<form-field ng-repeat='(k,v) in product | keyFilter :"retailer" | keyFilter :"categories"' record='product' field='{{k}}' live='false' ></form-field>
+		
+		<div class='row form-group'>
+			<div class='col-sm-offset-2'>
+				<button class='btn btn-primary' ng-click='save()'>Create Product</button>
+			</div>
+		</div>
+		
+	</form>
+</div>
