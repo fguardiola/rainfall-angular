@@ -15,7 +15,7 @@
 		<h3> Categories </h3>
 
 		<div ng-repeat="categoryID in category.links.children" ng-controller="categoryController">
-			<a href="#category/{{categoryID}}">
+			<a ng-href="#category/{{categoryID}}" ng-click="saveParentId()">
 				<p> {{ category.name }} </p>
 			</a>			
 		</div>
@@ -33,9 +33,10 @@
 		</div>
 		<button class="btn btn-primary" ng-click='newProduct()'>Add a Product</button>
 	</div>
+
 	<div class='row form-group'>
 		<div class='col-sm-offset-4'>
-			<button class='btn btn-danger' ng-click='delete()'>Delete Category</button>
+			<button class='btn btn-danger' ng-click='delete()'>Delete {{ category.name }}</button>
 		</div>
 	</div>
 

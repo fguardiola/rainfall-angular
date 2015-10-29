@@ -13,15 +13,16 @@
 		<h3> Default Categories </h3>
 
 		<div ng-repeat="categoryID in retailer.links.defaultCategories" ng-controller="categoryController">
-			<a href="#category/{{categoryID}}">
+			<a ng-href="#category/{{categoryID}}" ng-click='saveParentId()'>
 				<p> {{ category.name }} </p>
 			</a>
 		</div>
-		<button class="btn btn-primary" ng-click='newDefaultCategory()'>Add a Default Category</button>
+		
 	</div>
+	<button class="btn btn-primary" ng-click='newDefaultCategory()'>Add a Default Category</button>
 	<div class='row form-group'>
 		<div class='col-sm-offset-4'>
-			<button class='btn btn-danger' ng-click='delete()'>Delete Retailer</button>
+			<button class='btn btn-danger' ng-click='delete()'>Delete {{ retailer.name }}</button>
 		</div>
 	</div>
 </div>
