@@ -2,14 +2,14 @@
 	<label class='col-sm-2 control-label'> {{field}} <span ng-if='required'>*</span></label> 
 	<div class='col-sm-6' ng-switch='required'>
 		<input ng-switch-when='true' ng-model='record[field]' type='text' class='form-control' required ng-change='update()' ng-blur='blurUpdate()' />
-		<div class='input-group' ng-switch-default>
-			<input ng-model='record[field]' type='text' class='form-control'  ng-change='update()' ng-blur='blurUpdate()' /> 
-			<span class='input-group-btn'>
-				<button class='btn btn-default' ng-click='remove(field)'><span class='glyphicon glyphicon-remove-circle'></span></button>
-			</span>
-		</div>	
+		<div ng-switch-default ng-switch='name'>
+			<!-- <input ng-switch-when='description' ng-model='record[field]' type='text' class='form-control'  ng-change='update()' ng-blur='blurUpdate()' />  -->
+			<textarea ng-show="{{field}} == description" ng-model='record[field]'class='form-control'  ng-change='update()' ng-blur='blurUpdate()' rows="5" id="comment">
+			</textarea>
+			<input ng-show="{{field}} !== description" ng-model='record[field]' type='text' class='form-control'  ng-change='update()' ng-blur='blurUpdate()' /> 
+		</div>
+		
 	</div>
-
 
 	<div class='col-sm-4 has-error' ng-show='{{field}}.$dirty && {{field}}.$invalid' ng-messages="this.$eval(field)['$error']"> 
 

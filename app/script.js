@@ -19,7 +19,7 @@
         | |  | | (_) | (_| | |_| | |  __/
         \_|  |_/\___/ \__,_|\__,_|_|\___|
     */
-    var rainfallApp = angular.module('rainfallApp', ['ngRoute', 'ngResource', 'CustomFilters', 'ngStorage']);
+    var rainfallApp = angular.module('rainfallApp', ['ngRoute', 'ngResource', 'CustomFilters', 'ngStorage','ui.bootstrap']);
 
     /* Routes
         ______            _            
@@ -308,7 +308,7 @@
                               __/ |            __/ |
                              |___/            |___/ 
     */
-    rainfallApp.controller('categoryController', function($scope, $routeParams, Category, $location, Data, $localStorage,$q) {
+    rainfallApp.controller('categoryController', function($scope, $routeParams, Category,Product, $location, Data, $localStorage,$q) {
 
         //  $scope.$watch(function() {
         //     return Data.getDataShare();
@@ -320,6 +320,7 @@
 
         //using promises 
         var deferred=$q.defer();
+        var promises=[];
 
         var idParameter = $scope.categoryID || $routeParams.id;
         if (idParameter) {
@@ -331,6 +332,11 @@
                 $scope.categoryToModify = data;
                 console.log("Category: " + JSON.stringify($scope.category))
                 $localStorage.dataShare.categoryId = $scope.category.id;
+               // $localStorage.dataShare.parentCategoryId =  $scope.category.id;
+                // if($scope.category.links.parent){
+                //     $localStorage.dataShare.parentCategoryId= $scope.category.links.parent;
+                // }
+
                 console.log("Storage:" + JSON.stringify($localStorage.dataShare))
 
                     // Data.setProperty('categoryId',$scope.category.id)
@@ -350,32 +356,146 @@
         };
 
         $scope.delete = function() {
-           var promise=$scope.getDataPromise();
+           // var promise1=$scope.getDataPromise();
+           // var promise2=$scope.getDataPromise();
+           // promises.push(promise1,promise2)
 
-           promise.then(function(data){
-             console.log("WOW DATA REceived from server as a promise:"+JSON.stringify(data));
-           })
-        };
+           //  $q.all(promises).then(function(data) {
+           //      console.log("WOW All Promises COMPLETED"+JSON.stringify(data));
+           //      console.log("Promise1 data: "+JSON.stringify(data[0]));
+           //      console.log("Promise2 data: "+JSON.stringify(data[1]));
+           //  });
 
-        $scope.getDataPromise=function(){
+           //  var pomiseChildren=$scope.getChildrensIdAsPromise();
+           
+           // pomiseChildren.then(function(arrayChildrenIds){
+             
+           //   console.log("WOW DATA Array of children category ids REceived from server as a promise:"+arrayChildrenIds);
+
+           console.log("cat to delete: "+$scope.category.id);
+           alert("Sorry: not implemented yet");
+
+            // console.log("Deleting 1....");
+            // $scope.deleteCategoryAndProductsRecursevily($scope.category.id).then(function(){
+                
+            //     console.log("Fucking class!!!");
+            //     if($scope.category.links.parent){
+            //          $location.url('/category/'+$scope.category.links.parent);
+            //     }
+            //     else if($scope.category.links.retailer){
+            //          $location.url('/retailer/'+$scope.category.links.retailer);
+            //     }
+            //     else  $location.url('/home');
+            // })
+
+           };
+    
+
+        $scope.getCategoryAsPromise=function(id){
              Category.get({
-                id: idParameter
+                id: id
             },function(data){
                deferred.resolve(data); 
             },function(error){
                 deferred.reject(error);
             });
            return deferred.promise;
-        }
+        };
 
-           
+        $scope.deleteCategoryById=function(Id){
+            Category.delete({
+                id: Id
+            },function(data){
+               deferred.resolve(); 
+            },function(error){
+                deferred.reject(error);
+            });
+           return deferred.promise;
+        };
+
+        $scope.deleteProductById=function(Id){
+            Product.delete({
+                id: id
+            },function(data){
+               deferred.resolve(); 
+            },function(error){
+                deferred.reject(error);
+            });
+           return deferred.promise;
+        };
+  
         $scope.saveParentId=function(){
           
            $localStorage.dataShare.parentCategoryId=$scope.category.id;
             console.log("DataShare: "+JSON.stringify($localStorage.dataShare))
             // alert("Category id:"+  $localStorage.dataShare.categoryId+" parentCategoryId"+  $localStorage.dataShare.parentCategoryId);
         };
+
+
+        // $scope.deleteCategoryAndProductsRecursevily=function (categoryId) {
+                    
+        // console.log("Deleting recursevily");
+        //    return $scope.getCategoryAsPromise(categoryId).then(function(category){
+        //         var children=category.categories[0].links.children || [];
+        //         var products=category.categories[0].links.products || [];
+        //          console.log("children: "+children+" products: "+products);
+        //         //alert("children: "+children+"products: "+products);
+
+        //         var deleteOperations=[];
+        //         if(children.length>0){
+        //             console.log("Children length:"+children.length);
+                    
+        //             alert("Children to delete"+children)
+        //             children.forEach(function(childCategory){
+        //                 console.log("trying to delete children: "+childCategory);
+        //                 deleteOperations.push($scope.deleteCategoryAndProductsRecursevily(childCategory))
+        //             })
+                    
+        //             $q.all(deleteOperations).then(function(data) {
+        //                 console.log("trying to do shitttt");
+        //                 var deleteProducts = [];
+        //                 if(products.length>0){
+        //                     products.forEach(function (product) {
+        //                         deleteProducts.push($scope.deleteProductById(product));
+        //                     })
+        //                     $q.all(deleteProducts).then(function () {
+        //                         //Delete category
+        //                         $scope.deleteCategoryById(categoryId).then(function(){
+        //                             deferred.resolve(); 
+        //                             return;
+        //                             console.log("Category children and products deleted")
+        //                         })
+        //                        });
+                                
+        //                 }
+        //                 deferred.resolve(); 
+        //             });
+
+        //               deferred.resolve();
+        //         }
+
+        //           deferred.resolve();
+        //     });
+        // };
+
+         $scope.deleteCategoryAndProductsRecursevily=function (categoryId) {
+           return $scope.getCategoryAsPromise(categoryId).then(function(category){
+                var children=category.categories[0].links.children || [];
+                var products=category.categories[0].links.products || [];
+                
+                $scope.deleteCategoryById(children[0]).then(function(){
+                    $scope.deleteCategoryById(categoryId).then(function(){
+                        deferred.resolve();
+                        console.log("Deletion completed");
+                    });
+                });
+
+
+            });
+
+         };
     });
+   
     rainfallApp.controller('newCategoryController', function($scope, Category, $location,$localStorage) {
 
      
@@ -541,60 +661,161 @@
         };
 
     });
-    rainfallApp.controller('newProductController', function($scope, $routeParams, Product, $location, Data, $localStorage) {
+    rainfallApp.controller('newProductController', function($scope, $routeParams, Product,Retailer,Category,$location, Data, $localStorage) {
 
 
-        $scope.$watch(function() {
-            return Data.getDataShare();
-        }, function(newValue, oldValue) {
-            if (newValue !== oldValue) $scope.dataShare = newValue;
-        });
+        // $scope.$watch(function() {
+        //     return Data.getDataShare();
+        // }, function(newValue, oldValue) {
+        //     if (newValue !== oldValue) $scope.dataShare = newValue;
+        // });
+        
+        $scope.retailersInfo=[];
+        $scope.retailerName="Unselected";
+        $scope.categoryName="Unselected";
+        $scope.retailerId="";
+        $scope.categoryId="";
+        $scope.disable=true;
+        
+        Retailer.query(function(data) {
+            $scope.retailers = data.retailers;
+            
+            $scope.retailers.forEach(function(retailer){
+                 if(retailer.links && retailer.links.categories){
+                    $scope.retailersInfo.push({retailerName:retailer.name,id:retailer.id,categories:retailer.links.categories});
+                 }
+                 else  $scope.retailersInfo.push({retailerName:retailer.name,id:retailer.id});
+                 //$scope.retailersInfo.push(retailer.name);
+                
+                 // $scope.retailersInfo.push({retailerName:retailer.name});
+            })
+            console.log( $scope.retailersInfo)
 
+         });
+
+        
 
         $scope.productToModify = new Product({
             "products": []
 
         });
         $scope.product = {
-            "name": '',
-            "image": '',
-
-            "retailer": "",
-            "categories": []
-
-
+            "retailer":"",
+            "categories":"",
+            "name":"",
+            "mainimage":"",
+            "augment":"",
+            "description":"",
+            "price":""
         };
 
         // Save new contact
         $scope.save = function() {
             // alert("Not implemented yet")
+            $scope.productToSave={};
             if ($scope.newProduct.$invalid) {
                 $scope.$broadcast('record:invalid'); //??????
             } else {
-                var dataShared = Data.getDataShare();
+
+                
+                for (var k in $scope.product) {
+                     console.log("Key is " + k + ", value is" + $scope.product[k]);
+                    if ($scope.product[k]) {
+                        //check if category is selected. if not not include the key in product to save
+                        if(k==="categories" && $scope.product[k].length>0){
+                            $scope.productToSave[k]=$scope.product[k];
+                        }
+                        else {$scope.productToSave[k]=$scope.product[k];}
+                         
+                         console.log("Key is " + k + ", value is" + $scope.product[k]);
+                    }
+                }
+
+                console.log("productToModify: "+JSON.stringify($scope.product));
+                console.log("productToSave: "+JSON.stringify($scope.productToSave));
+
+                $scope.productToModify.products.push($scope.productToSave);
+                if ($scope.productToModify.products[0].retailer) {
+                    $scope.productToModify.$save(function(res, err) {
+                        console.log("Saving Product Response:" + JSON.stringify(res))
+                         var url;
+                         if(res.products[0].links.categories[0]){
+                          url = "/category/" + res.products[0].links.categories[0];
+                          $location.url(url);
+                          }
+                        else if(res.products[0].links.retailer){
+                             url = "/retailer/" + res.products[0].links.retailer;
+                          $location.url(url);
+                        }
+                    });
+
+                   
+                }
+
+                // var dataShared = Data.getDataShare();
                 // console.log("Retailer: "+dataShared.retailerId+"  Category:"+dataShared.categoryId)
                 // var retailerId=dataShared.retailerId;
                 // var categoryId=dataShared.categoryId;
 
                 // alert("Retailer: "+$localStorage.dataShare.retailerId+"  Category:"+$localStorage.dataShare.categoryId)
-                $scope.product.retailer = $localStorage.dataShare.retailerId;
-                $scope.product.categories.push($localStorage.dataShare.categoryId);
-                $scope.productToModify.products.push($scope.product);
-                if ($localStorage.dataShare.retailerId && $localStorage.dataShare.categoryId) {
-                    $scope.productToModify.$save(function(res, err) {
-                        console.log("Saving Product Response:" + JSON.stringify(res))
-                         var url = "/category/" + $scope.product.categories[0];
-                        $location.url(url);
-                    });
+                
 
-                   
-                }
+                // $scope.product.retailer = $localStorage.dataShare.retailerId;
+                // $scope.product.categories.push($localStorage.dataShare.categoryId);
+                // $scope.productToModify.products.push($scope.product);
+                
+
+                // console.log("Product to save"+JSON.stringify($scope.productToSave));
             }
         };
 
+        $scope.show = function(retailer) {
+            //set retailer Id in object
+            
+            $scope.retailerName=retailer.retailerName;
 
+            $scope.retailerId = retailer.id;
+            $scope.product.retailer=  retailer.id;
+            console.log("Retailer:" + JSON.stringify(retailer));
 
-    });
+            $scope.categoriesInfo = [];
+            //get categories database
+            var idParameter = retailer.categories || null;
+            console.log("Categories info:"+idParameter);
+            console.log("Categories ids:"+  $scope.categoriesInfo);
+            if (idParameter) {
+                Category.get({
+                    id: idParameter
+                }, function(data) {
+                    $scope.categoriesInfo = [];
+                    console.log("Data:" + JSON.stringify(data));
+                    $scope.categories = data.categories;
+
+                    $scope.categories.forEach(function(category) {
+                        $scope.categoriesInfo.push({
+                            categoryName: category.name,
+                            id: category.id
+                        })
+                    });
+                    console.log("CategoriesInfo:"+JSON.stringify($scope.categoriesInfo));
+                });
+            };
+        $scope.disable = false;
+        // alert("Retailer selected:"+retailer.retailer[0]+" Id: "+retailer.retailer[1]);
+
+    };
+
+    //set category id
+    $scope.setCategory = function(category) {
+        $scope.categoryId=category.id;
+        $scope.categoryName=category.categoryName;
+        $scope.product.categories=[];
+        $scope.product.categories.push(category.id);
+        console.log("Category selected:"+JSON.stringify(category));
+        console.log("Category id:"+JSON.stringify($scope.categoryId));
+    };
+
+});
 
     //DIRECTIVES
 

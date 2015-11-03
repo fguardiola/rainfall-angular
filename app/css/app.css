@@ -2,3 +2,9 @@
 	margin: auto; 
 	/*max-width: 300px;*/
 }
+
+.dropdown-menu {
+    max-height: 300px;
+    overflow: hidden;
+    overflow-y: auto;
+}

@@ -1,10 +1,43 @@
 <div class="jumbotron text-center">
 	<h2> New Product</h2><br>
+	<div class='row'>
+		<h3 ng-model='retailerName'> Retailer selected: {{retailerName}}</h3><h3 ng-model='categoryName'> Category selected: {{categoryName}}</h3><br>
+	</div>
 	<div class='row col-sm-offset-2'>
-		<form name='newProduct' novalidate class='form-horizontal'>
+		<form name='newProduct' novalidate class='form-horizontal' >
+            <fieldset ng-disabled="disable"> 
+	            <!-- <form-field  record='product.retailer' field='retailer' live='false' required='true' disabled="true" ></form-field>
+	            <form-field  record='product' field='' live='false' required='true'  ></form-field> -->
+	            
+	            <form-field  record='product' field='name' live='false' required='true'  ></form-field>
+	            <form-field  record='product' field='mainimage' live='false' required='true'  ></form-field>
 
-			<form-field ng-repeat='(k,v) in product | keyFilter :"retailer" | keyFilter :"categories"' record='product' field='{{k}}' live='false' required='true' ></form-field>
+				<form-field ng-repeat='(k,v) in product | keyFilter :"retailer" | keyFilter :"categories" | keyFilter :"name" | keyFilter :"mainimage" | keyFilter :"price"' record='product' field='{{k}}' live='false'   ></form-field>
+
+				 <form-field  record='product' field='price' live='false' required='true'  ></form-field>
+
+			</fieldset>
 			
+			<div class='row form-group'>
+				<div class='btn-group col-sm-offset-2 dropup'>
+					<button class='btn btn-default dropdown-toggle' data-toggle='dropdown'>Select retailer <span class='caret'></span>
+					</button>
+					<ul class='dropdown-menu scrollable-menu'>
+						<li ng-repeat='item in retailersInfo'><a ng-click='show(item)'>{{item.retailerName}}</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class='row form-group'>
+				<div class='btn-group col-sm-offset-2 dropup'>
+					<button class='btn btn-default dropdown-toggle' data-toggle='dropdown' ng-disabled="disable">
+						Select category <span class='caret'></span>
+					</button>
+					<ul class="dropdown-menu scrollable-menu" role="menu">
+						<li ng-repeat='item in categoriesInfo'><a ng-click='setCategory(item)'>{{item.categoryName}}</a></li>
+					</ul>
+				</div>
+			</div>
+
 			<div class='row form-group'>
 				<div class='col-sm-offset-2'>
 					<button class='btn btn-primary' ng-click='save()'>Create Product</button>
@@ -13,4 +46,6 @@
 			
 		</form>
 	</div>
+	
+	
 </div>
